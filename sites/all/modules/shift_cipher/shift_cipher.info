@@ -1,0 +1,5 @@
+name = Shift Cipher
+description = The Shift Cipher Module takes three inputs. One shift input, one direction input, and one phrase input. It outputs the shifted phrase.
+package = Code Review
+core = 7.x
+files[] = shift_cipher.module

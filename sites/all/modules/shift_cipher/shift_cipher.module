@@ -62,8 +62,7 @@ function element_validate_string($element) {
 
 function element_validate_direction($element) {
   $direction = strtoupper($element['#value']);
-  // $left = 'LEFT';
-  // $right = 'RIGHT';
+
   if ($direction != 'RIGHT' && $direction != 'LEFT') {
     form_error($element, t('Must enter left or right.'));
   }
@@ -73,14 +72,66 @@ function element_validate_direction($element) {
 function shift_cipher_form_submit($form, &$form_state) {
   $phrase = $form_state['values']['phrase'];
   $shift_value = $form_state['values']['shift_value'];
-  $shift_direction = $form_state['values']['shift_direction'];
+  $shift_direction = strtoupper($form_state['values']['shift_direction']);
+  $new_phrase = "";
 
-  $_SESSION['shift_output'] = $phrase;
+  $letters_array =  [ '1' => 'a',
+                      '2' => 'b',
+                      '3' => 'c',
+                      '4' => 'd',
+                      '5' => 'e',
+                      '6' => 'f',
+                      '7' => 'g',
+                      '8' => 'h',
+                      '9' => 'i',
+                      '10' => 'j',
+                      '11' => 'k',
+                      '12' => 'l',
+                      '13' => 'm',
+                      '14' => 'n',
+                      '15' => 'o',
+                      '16' => 'p',
+                      '17' => 'q',
+                      '18' => 'r',
+                      '19' => 's',
+                      '20' => 't',
+                      '21' => 'u',
+                      '22' => 'v',
+                      '23' => 'w',
+                      '24' => 'x',
+                      '25' => 'y',
+                      '26' => 'z'];
+
+  $lowercase_phrase = strtolower($phrase);
+  $split_letter = str_split($lowercase_phrase);
+
+
+  for ( $i = 0; $i < count($split_letter); $i++){
+    // foreach($split_letter as $split_letter_key => $split_letter_value) {
+      foreach($letters_array as $letters_array_key => $letters_array_value) {
+        if($split_letter[$i] === $letters_array_value) {
+          if($shift_direction === 'LEFT') {
+            // $letters_array_key = $letters_array_key - $shift_value;
+            $new_key = $letters_array_key - $shift_value;
+            $new_letter = $letters_array[$new_key];
+          } else {
+            $new_key = $letters_array_key + $shift_value;
+            $new_letter = $letters_array[$new_key];
+          }
+            $new_phrase .= $new_letter;
+        }
+      // }
+    }
+  }
+
+  $_SESSION['dump'] = ($new_key);
+  $_SESSION['shift_output'] = $new_phrase;
   $form_state['redirect'] = 'shift_results';
 }
 
 //results
 function shift_cipher_results() {
   $results = $_SESSION['shift_output'];
+  var_dump($_SESSION['dump']);
   return " $results ";
 }

@@ -107,24 +107,28 @@ function shift_cipher_form_submit($form, &$form_state) {
 
 
   for ( $i = 0; $i < count($split_letter); $i++){
-    // foreach($split_letter as $split_letter_key => $split_letter_value) {
       foreach($letters_array as $letters_array_key => $letters_array_value) {
         if($split_letter[$i] === $letters_array_value) {
+
           if($shift_direction === 'LEFT') {
-            // $letters_array_key = $letters_array_key - $shift_value;
             $new_key = $letters_array_key - $shift_value;
+            if($new_key < 1) {
+              $new_key = ($letters_array_key - $shift_value) + 26;
+            }
             $new_letter = $letters_array[$new_key];
+
           } else {
             $new_key = $letters_array_key + $shift_value;
+            if($new_key > 26) {
+              $new_key = ($letters_array_key + $shift_value) - 26;
+            }
             $new_letter = $letters_array[$new_key];
           }
             $new_phrase .= $new_letter;
         }
-      // }
     }
   }
 
-  $_SESSION['dump'] = ($new_key);
   $_SESSION['shift_output'] = $new_phrase;
   $form_state['redirect'] = 'shift_results';
 }
@@ -132,6 +136,5 @@ function shift_cipher_form_submit($form, &$form_state) {
 //results
 function shift_cipher_results() {
   $results = $_SESSION['shift_output'];
-  var_dump($_SESSION['dump']);
   return " $results ";
 }

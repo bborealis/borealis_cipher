@@ -1,0 +1,48 @@
+<?php
+function shift_cipher_menu() {
+  $items = array();
+  $items['shift_cipher'] = array(
+    'title' => 'Shift Cipher',
+    'type' => MENU_NORMAL_ITEM,
+    'access callback' => TRUE,
+    'page callback' => 'druapl_get_form',
+    'page arguments' => array('shift_cipher_form'),
+  );
+
+  $items['shift_results'] = array(
+    'title' => 'Shift Cipher Results',
+    'type' => MENU_CALLBACK,
+    'access callback' => TRUE,
+    'page callback' => 'shift_cipher_results',
+  );
+  return $items;
+}
+
+function shift_cipher_form() {
+  $form = array();
+  $form['phrase'] = array(
+    '#title' => 'Phrase to shift',
+    '#type' => 'textfield',
+    '#description' => t('Enter a phrase'),
+    '#required' => TRUE,
+    // '#element_validate' => array(),
+  );
+
+  $form['shift_value'] = array(
+    '#title' => 'Value to shift',
+    '#type' => 'textfield',
+    '#description' => t('Enter the value to shift'),
+    '#required' => TRUE,
+    '#element_validate' => array('element_validate_integer_positive'),
+  );
+
+  $form['shift-direction'] = array(
+    '#title' => 'Direction to shift',
+    '#type' => 'textfield',
+    '#description' => t('Enter left or right'),
+    '#required'=> TRUE,
+    // '#element_validate' => array(),
+  );
+
+  return $form;
+}

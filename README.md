@@ -44,8 +44,11 @@ _password : epicodus_
 ## Technologies Used
 
 _This project makes use of:
-Drupal 7_
+Drupal 7, php_
 
+## To Do
+
+Add the ability to shift more then one word.
 
 ### Legal
 

@@ -55,8 +55,8 @@ function shift_cipher_form() {
 
 //form validation
 function element_validate_string($element) {
-  if (ctype_digit($element['#value'])) {
-    form_error($element, t('Must enter a word. No numbers allowed'));
+  if (!(ctype_alpha($element['#value']))) {
+    form_error($element, t('Must enter a word. No numbers allowed or multiple words allowed.'));
   }
 }
 
@@ -108,23 +108,32 @@ function shift_cipher_form_submit($form, &$form_state) {
 
   for ( $i = 0; $i < count($split_letter); $i++){
       foreach($letters_array as $letters_array_key => $letters_array_value) {
+    if($split_letter[$i] === " ") {
+      $new_letter = " ";
+    }
         if($split_letter[$i] === $letters_array_value) {
 
+//if left direction
           if($shift_direction === 'LEFT') {
             $new_key = $letters_array_key - $shift_value;
+//if shift goes left of "a"
             if($new_key < 1) {
+//add 26 to the new array key
               $new_key = ($letters_array_key - $shift_value) + 26;
             }
             $new_letter = $letters_array[$new_key];
 
+//if right direction
           } else {
             $new_key = $letters_array_key + $shift_value;
+//if shift goes right of "z"
             if($new_key > 26) {
+//subtrack 26 from the new array key
               $new_key = ($letters_array_key + $shift_value) - 26;
             }
             $new_letter = $letters_array[$new_key];
           }
-            $new_phrase .= $new_letter;
+          $new_phrase .= $new_letter;
         }
     }
   }
